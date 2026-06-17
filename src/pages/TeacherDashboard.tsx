@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef , useMemo } from "react";
 import { store, Deck } from "../lib/store";
 import { FileText, Upload, AlertCircle, AlertTriangle, BarChart3, Users, CheckCircle2, TrendingUp, Target, FileUp, Activity, BookOpen, Shield, Trash2, FolderOpen, Inbox, Layers, Settings, Check, X, RefreshCw, Plus, Heart, LogOut, ChevronDown, ChevronUp, Lock, Sparkles, Edit2 } from "lucide-react";
 import { Navigate, Link } from "react-router-dom";
@@ -238,7 +238,7 @@ export default function TeacherDashboard() {
   const isSavingPlanRef = useRef(false);
   const isGeneratingPlanRef = useRef(false);
 
-  const existingSubjects = React.useMemo(() => {
+  const existingSubjects = useMemo(() => {
     const subjectsSet = new Set<string>();
     localDecks.forEach(d => {
       const s = (typeof d.subject === 'string' ? d.subject : JSON.stringify(d.subject)) || "general";
@@ -482,7 +482,7 @@ export default function TeacherDashboard() {
   const [isSyncingGhostUsers, setIsSyncingGhostUsers] = useState(false);
   const [syncMessage, setSyncMessage] = useState<string | null>(null);
 
-  const generatedMarkdown = React.useMemo(() => {
+  const generatedMarkdown = useMemo(() => {
     let md = `# THƯ VIỆN HỌC PHẦN COSTUDY HENOSIS\n\n`;
     md += `*Tổng số học phần hiện tại: **${localDecks.length}** bộ thẻ.*\n\n`;
     md += `---\n\n`;

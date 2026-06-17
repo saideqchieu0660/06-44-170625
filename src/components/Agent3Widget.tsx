@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect, useCallback , useMemo } from "react";
 import { store } from "../lib/store";
 import { MessageCircle, X, Send, Bot, CheckCircle, Maximize2, Minimize2, Flame, Plus, Loader2, FolderPlus, Settings, Sparkles, XCircle, Copy, Download, FileCode } from "lucide-react";
 import { cn } from "../lib/utils";
@@ -1213,7 +1213,7 @@ const MermaidRenderer = ({ code, onAddCard }: { code: string; onAddCard: (text: 
   const [imageError, setImageError] = React.useState(false);
 
   // Parse mindmap sang cây cấu trúc
-  const parsedRoot = React.useMemo(() => {
+  const parsedRoot = useMemo(() => {
     try {
       return parseMermaidMindmap(code);
     } catch (e) {
@@ -1223,7 +1223,7 @@ const MermaidRenderer = ({ code, onAddCard }: { code: string; onAddCard: (text: 
   }, [code]);
 
   // Sinh URL Mermaid.ink
-  const imageUrl = React.useMemo(() => {
+  const imageUrl = useMemo(() => {
     try {
       let cleaned = code.trim();
       const utf8Bytes = new TextEncoder().encode(cleaned);

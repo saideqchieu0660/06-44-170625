@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState , useMemo } from 'react';
 import * as d3 from 'd3';
 import { useTheme } from './ThemeProvider';
 import { useNavigate } from 'react-router-dom';
@@ -35,7 +35,7 @@ export const SkillTreeGraph = React.memo(function SkillTreeGraph({ decks }: Skil
   // Nâng cấp: Lọc theo danh mục (Subject filter)
   const [selectedSubject, setSelectedSubject] = useState<string>("All");
 
-  const uniqueSubjects = React.useMemo(() => {
+  const uniqueSubjects = useMemo(() => {
      const subs = new Set<string>();
      decks.forEach(d => subs.add(d.subject || 'Chung'));
      return Array.from(subs);

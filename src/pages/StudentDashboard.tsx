@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { store, Deck, saveLocalUserDecks } from "../lib/store";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Plus, X, Play, TrendingUp, Users, Target, BookOpen, BrainCircuit, Activity, Flame, ArrowLeft, CheckCircle2, XCircle, ArrowRight, Loader2, Trophy, Sparkles, Maximize2, Minimize2, Bell, BellOff, BellRing, Settings, AlertTriangle, Trash2, Snowflake, Volume2, VolumeX, Clock, Network, Award, Bot, User, Crown, ChevronUp, ChevronDown, Minus, Shield, RefreshCw, Heart, LogOut, Bug, Type, Library, Camera, Edit3, HelpCircle, Cpu, ShoppingBag, Lock, Zap, Ghost, ShieldAlert, Eye, BarChart3, Download } from "lucide-react";
@@ -447,7 +447,7 @@ export default function StudentDashboard() {
   const [isCreatingNewSubject, setIsCreatingNewSubject] = useState(false);
   const [manualCards, setManualCards] = useState<{ front: string; back: string }[]>([]);
 
-  const existingSubjects = React.useMemo(() => {
+  const existingSubjects = useMemo(() => {
     const subjectsSet = new Set<string>();
     rawDecks.forEach((d) => {
       const s =
@@ -527,7 +527,7 @@ export default function StudentDashboard() {
   const navigate = useNavigate();
   const [isStartingQuest, setIsStartingQuest] = useState(false);
 
-  const handleStartDailyQuest = React.useCallback(async () => {
+  const handleStartDailyQuest = useCallback(async () => {
     setIsStartingQuest(true);
     try {
       const allDecks = store.getDecks();
@@ -671,7 +671,7 @@ export default function StudentDashboard() {
   }, [user?.id]);
 
   // 3. Merge raw decks and personal card states to form localDecks and store
-  const localDecks = React.useMemo(() => {
+  const localDecks = useMemo(() => {
     if (rawDecks.length === 0) return store.getDecks();
 
     const stateMap = new Map();
@@ -799,7 +799,7 @@ export default function StudentDashboard() {
     return () => {};
   }, [user?.id]);
 
-  const sortedUsers = React.useMemo(() => {
+  const sortedUsers = useMemo(() => {
     const currentWeekId = store.getISOWeekId();
     return dbUsers.length > 0
       ? dbUsers.map(u => {
@@ -962,7 +962,7 @@ export default function StudentDashboard() {
   };
   
   // --- Weekly Study Time Calculation ---
-  const calculateWeeklyStudyHours = React.useCallback(() => {
+  const calculateWeeklyStudyHours = useCallback(() => {
     if (!user) return { hours: 0, minutes: 0 };
     const history = store.getReviewHistory(user.id);
     if (!history || history.length === 0) return { hours: 0, minutes: 0 };
@@ -994,7 +994,7 @@ export default function StudentDashboard() {
     };
   }, [user?.id]);
 
-  const { hours: studyHours, minutes: studyMinutes } = React.useMemo(() => calculateWeeklyStudyHours(), [calculateWeeklyStudyHours]);
+  const { hours: studyHours, minutes: studyMinutes } = useMemo(() => calculateWeeklyStudyHours(), [calculateWeeklyStudyHours]);
   // -------------------------------------
   
   const [showRemindLaterModal, setShowRemindLaterModal] = useState(false);
@@ -1013,7 +1013,7 @@ export default function StudentDashboard() {
     return () => window.removeEventListener("focus", fetchReminders);
   }, []);
   
-  const remindLaterCards = React.useMemo(() => {
+  const remindLaterCards = useMemo(() => {
     const allCards = decks.flatMap(d => (d.cards || []).map(c => ({ ...c, originDeckId: d.id, originDeckTitle: d.title })));
     return allCards.filter(c => c.isHard === true || remindLaterCardIds.includes(c.id));
   }, [decks, remindLaterCardIds]);
@@ -1042,7 +1042,7 @@ export default function StudentDashboard() {
     navigate("/study/remind-later-deck");
   };
 
-  const startCategoryRemindLaterStudy = React.useCallback((subject: string, subjectDecks: Deck[]) => {
+  const startCategoryRemindLaterStudy = useCallback((subject: string, subjectDecks: Deck[]) => {
     const hardCards = subjectDecks.flatMap(d => (d.cards || []).map(c => ({ ...c, originDeckId: d.id, originDeckTitle: d.title }))).filter(c => c.isHard === true || remindLaterCardIds.includes(c.id));
     if (hardCards.length === 0) return;
 
@@ -1060,7 +1060,7 @@ export default function StudentDashboard() {
     navigate(`/study/${remindDeck.id}`);
   }, [navigate]);
   
-  const startCategoryStudyAll = React.useCallback((subject: string, subjectDecks: Deck[]) => {
+  const startCategoryStudyAll = useCallback((subject: string, subjectDecks: Deck[]) => {
     const allCards = subjectDecks.flatMap(d => (d.cards || []).map(c => ({ ...c, originDeckId: d.id, originDeckTitle: d.title })));
     if (allCards.length === 0) return;
 
@@ -1134,7 +1134,7 @@ export default function StudentDashboard() {
     return acc + (deck.cards || []).filter(c => c.nextReview && c.nextReview <= Date.now()).length;
   }, 0);
 
-  const deckWithLowestMastery = React.useMemo(() => {
+  const deckWithLowestMastery = useMemo(() => {
     const decksWithCards = decks.filter(d => d.cards && d.cards.length > 0);
     if (decksWithCards.length === 0) return null;
     
@@ -1562,15 +1562,15 @@ export default function StudentDashboard() {
       ];
     }
   };
-  const trendData = React.useMemo(() => getTrendData(), [chartPeriod, basePoints]);
+  const trendData = useMemo(() => getTrendData(), [chartPeriod, basePoints]);
   // Streak Data for the last 30 days
-  const getStreakData = React.useCallback(() => {
+  const getStreakData = useCallback(() => {
      return Array.from({length: 30}).map((_, i) => ({
          day: `Day ${i + 1}`,
          streak: Math.max(0, (user?.streak || 0) - (29 - i))
      }));
   }, [user?.streak]);
-  const streakData = React.useMemo(() => getStreakData(), [getStreakData]);
+  const streakData = useMemo(() => getStreakData(), [getStreakData]);
 
   const CustomStreakTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {

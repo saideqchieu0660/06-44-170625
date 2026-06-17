@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef , useCallback } from "react";
 import { collection, onSnapshot, doc, setDoc, deleteDoc, updateDoc } from "firebase/firestore";
 import { db, FirebaseListenerManager } from "../lib/firebase";
 import { store } from "../lib/store";
@@ -248,11 +248,11 @@ export default function CoStudyRoom() {
     setNewTaskText("");
   };
 
-  const toggleTask = React.useCallback((taskId: string) => {
+  const toggleTask = useCallback((taskId: string) => {
     setTasks(prev => prev.map(t => t.id === taskId ? { ...t, done: !t.done } : t));
   }, []);
 
-  const deleteTask = React.useCallback((taskId: string) => {
+  const deleteTask = useCallback((taskId: string) => {
     setTasks(prev => prev.filter(t => t.id !== taskId));
   }, []);
 

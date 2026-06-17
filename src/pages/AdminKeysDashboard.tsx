@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef , useMemo } from "react";
 import { Key, AlertCircle, CheckCircle, Clock, RefreshCw, Loader2, ListOrdered, Server, Globe, Cpu, Activity, Zap } from "lucide-react";
 import * as d3 from 'd3';
 import { store } from "../lib/store";
@@ -358,7 +358,7 @@ export function ServiceMonitor({ adminKey }: { adminKey: string }) {
     }
   };
 
-  const clientLatencyAvg = React.useMemo(() => {
+  const clientLatencyAvg = useMemo(() => {
     const latencies = networkLogs.filter(log => log.type === 'latency').map(log => Number(log.value));
     if (latencies.length === 0) return 0;
     return Math.round(latencies.reduce((a, b) => a + b, 0) / latencies.length);

@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Mail, ArrowLeft } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 export default function VerifyEmailScreen() {
-  React.useEffect(() => {
+  useEffect(() => {
     document.title = "Henosis Web";
   }, []);
 

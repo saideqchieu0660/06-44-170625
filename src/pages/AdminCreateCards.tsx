@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback , useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Plus,
@@ -83,7 +83,7 @@ export default function AdminCreateCards() {
   const [newDeckSubject, setNewDeckSubject] = useState("");
   const [isCreatingNewSubjectAdmin, setIsCreatingNewSubjectAdmin] = useState(false);
 
-  const existingSubjects = React.useMemo(() => {
+  const existingSubjects = useMemo(() => {
     const subjectsSet = new Set<string>();
     decks.forEach((d) => {
       const s =

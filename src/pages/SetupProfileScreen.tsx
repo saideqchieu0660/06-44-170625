@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { User, Key, Loader2, AlertCircle, ArrowRight, Eye, EyeOff, Lock, Bug, Camera } from 'lucide-react';
 import { dbService } from '../lib/firebase';
@@ -24,7 +24,7 @@ export default function SetupProfileScreen() {
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
-  React.useEffect(() => {
+  useEffect(() => {
     document.title = "Henosis Web";
     if (auth.currentUser) {
       setUsername(auth.currentUser.displayName || auth.currentUser.email?.split('@')[0] || '');

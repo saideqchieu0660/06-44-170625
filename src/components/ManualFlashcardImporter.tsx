@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef , useEffect , useMemo } from "react";
 import {
   Copy,
   ExternalLink,
@@ -105,7 +105,7 @@ export default function ManualFlashcardImporter() {
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isAutomating) {
       fetchTelemetryLogs();
       const interval = setInterval(fetchTelemetryLogs, 4000);
@@ -195,7 +195,7 @@ export default function ManualFlashcardImporter() {
     );
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     return () => {
       if (logRafRef.current) {
         cancelAnimationFrame(logRafRef.current);
@@ -209,7 +209,7 @@ export default function ManualFlashcardImporter() {
     };
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const saved = localStorage.getItem("henosis-importer-pipeline");
     if (saved) {
       try {
@@ -671,7 +671,7 @@ export default function ManualFlashcardImporter() {
   const catDropdownRef = useRef<HTMLDivElement>(null);
   const catInputRef = useRef<HTMLInputElement>(null);
 
-  const existingCategories = React.useMemo(() => {
+  const existingCategories = useMemo(() => {
     const allDecks = store.getDecks();
     const cats = allDecks
       .filter((d) => d.subject)
@@ -683,7 +683,7 @@ export default function ManualFlashcardImporter() {
     c.toLowerCase().includes(deckSubject.toLowerCase()),
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
         catDropdownRef.current &&

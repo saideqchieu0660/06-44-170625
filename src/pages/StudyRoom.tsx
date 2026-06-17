@@ -451,7 +451,7 @@ export default function StudyRoom() {
   }, [user?.id]);
 
   // 3. Merge raw deck and personal card states to form reactive deck
-  const deck = React.useMemo(() => {
+  const deck = useMemo(() => {
     if (!rawDeck) return null;
     const stateMap = new Map();
     if (personalCardStates && personalCardStates.length > 0) {
@@ -693,7 +693,7 @@ export default function StudyRoom() {
   const [isCreatingNewSubjectDeck, setIsCreatingNewSubjectDeck] =
     useState(false);
 
-  const existingSubjects = React.useMemo(() => {
+  const existingSubjects = useMemo(() => {
     const subjectsSet = new Set<string>();
     store.getDecks().forEach((d) => {
       const s =
@@ -719,7 +719,7 @@ export default function StudyRoom() {
     return Array.from(subjectsSet);
   }, []);
 
-  const canEditDeck = React.useMemo(() => {
+  const canEditDeck = useMemo(() => {
     if (!user || !deck) return false;
     const systemDecks = [
       "deck_1", "deck_phil_2", "deck_math_1", "deck_math_2", "deck_physics_1", "deck_physics_2", "daily-quest", "remind-later-deck"
@@ -1322,7 +1322,7 @@ export default function StudyRoom() {
     );
   };
 
-  const handleReportError = React.useCallback(async () => {
+  const handleReportError = useCallback(async () => {
     if (!currentCard || !deck) return;
 
     try {
@@ -1342,7 +1342,7 @@ export default function StudyRoom() {
     }
   }, [currentCard, deck]);
 
-  const handleMark = React.useCallback(
+  const handleMark = useCallback(
     (remembered: boolean) => {
       initAudio();
       if (currentCard) {
@@ -1441,7 +1441,7 @@ export default function StudyRoom() {
     ],
   );
 
-  const handlePrevCard = React.useCallback(() => {
+  const handlePrevCard = useCallback(() => {
     if (currentIndex > 0) {
       if (!isPinned) setDeepExplanation(null);
       else setIsMinimized(true);
@@ -1450,7 +1450,7 @@ export default function StudyRoom() {
     }
   }, [currentIndex, isPinned]);
 
-  const handleNextCard = React.useCallback(() => {
+  const handleNextCard = useCallback(() => {
     if (currentIndex + 1 < studyQueue.length) {
       if (!isPinned) setDeepExplanation(null);
       else setIsMinimized(true);
